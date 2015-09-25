@@ -5,6 +5,7 @@ ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/loca
 RUN yum -y update && \
     yum -y groupinstall "Development Tools" && \
     yum -y install \
+    epel-release \
     curl \
     git \
     httpd \
@@ -20,6 +21,7 @@ RUN yum -y update && \
     php-odbc \
     php-pear \
     php-pecl-imagick \
+    php-pecl-zendopcache \
     rsync \
     tmux \
     vim \
