@@ -2,30 +2,44 @@ FROM centos:7
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+# Install and enable repositories
+Run yum -y update && \
+    yum -y install \
+    epel-release
+
+# Install base
 RUN yum -y update && \
     yum -y groupinstall "Development Tools" && \
     yum -y install \
-    epel-release \
     curl \
     git \
     httpd \
-    mysql-client \
+    mariadb \
     net-tools \
+    rsync \
+    tmux \
+    vim \
+    wget
+
+# Install PHP and PHP modules
+RUN yum -y update && \
+    yum -y install \
     php \
-    php-cli \
     php-curl \
     php-gd \
     php-imap \
+    php-mbstring \
     php-mcrypt \
     php-mysql \
     php-odbc \
     php-pear \
     php-pecl-imagick \
-    php-pecl-zendopcache \
-    rsync \
-    tmux \
-    vim \
-    wget
+    php-pecl-zendopcache
+
+# No package mysql-client available. Fixed with mariadb.
+# No package php-pecl-imagick available.
+# No package php-mcrypt available.
+# No package php-imap available.
 
 # Install misc tools
 RUN yum -y update && yum -y install \
