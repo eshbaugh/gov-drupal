@@ -36,11 +36,6 @@ RUN yum -y update && \
     php-pecl-imagick \
     php-pecl-zendopcache
 
-# No package mysql-client available. Fixed with mariadb.
-# No package php-pecl-imagick available.
-# No package php-mcrypt available.
-# No package php-imap available.
-
 # Install misc tools
 RUN yum -y update && yum -y install \
     python-setuptools \
