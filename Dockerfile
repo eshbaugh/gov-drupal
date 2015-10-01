@@ -79,12 +79,13 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 RUN systemctl disable httpd.service && \
     systemctl disable rsyslog.service
 
-# Apache config
+# Apache config, and PHP config, test apache config
 # See https://github.com/docker/docker/issues/7511 /tmp usage
 COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
 RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
     apachectl configtest
+RUN rsync -a /tmp/centos-7/etc/php* /etc/
 
 COPY conf/supervisord.conf /etc/supervisord.conf
 # ADD conf/website.conf /etc/apache2/sites-available/000-default.conf
