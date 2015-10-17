@@ -17,6 +17,7 @@ RUN yum -y update && \
     mariadb \
     net-tools \
     rsync \
+    sendmail \
     tmux \
     vim \
     wget
