@@ -17,6 +17,7 @@ RUN yum -y update && \
     mariadb \
     msmtp \
     net-tools \
+    python34 \
     rsync \
     tmux \
     vim \
@@ -41,6 +42,10 @@ RUN yum -y update && \
 RUN yum -y update && yum -y install \
     python-setuptools \
     rsyslog
+
+# Apply My_Init Workarounds
+RUN mkdir /etc/container_environment
+RUN mkdir /etc/workaround-docker-2267
 
 # Install supervisor. Requires python-setuptools.
 RUN easy_install \
@@ -72,8 +77,10 @@ RUN rsync -a /tmp/centos-7/etc/php* /etc/
 
 COPY conf/supervisord.conf /etc/supervisord.conf
 COPY conf/lamp.sh /etc/lamp.sh
+COPY conf/my_init /
+RUN chmod +x /my_*
 
 EXPOSE 80 443
 
 RUN chmod +x /etc/lamp.sh
-CMD ["/etc/lamp.sh"]
+CMD ["/my_init"]
