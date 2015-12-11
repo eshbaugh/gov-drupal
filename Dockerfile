@@ -2,6 +2,9 @@ FROM centos:7
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
+# Set TERM env to avoid mysql client error message "TERM environment variable not set" when running from inside the container
+ENV TERM xterm
+
 # Install and enable repositories
 Run yum -y update && \
     yum -y install \
