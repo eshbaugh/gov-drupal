@@ -5,6 +5,9 @@ ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/loca
 # Set TERM env to avoid mysql client error message "TERM environment variable not set" when running from inside the container
 ENV TERM xterm
 
+# Fix command line compile issue with bundler.
+ENV LC_ALL C.UTF-8
+
 # Install and enable repositories
 Run yum -y update && \
     yum -y install \
