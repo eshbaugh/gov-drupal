@@ -6,7 +6,7 @@ ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/loca
 ENV TERM xterm
 
 # Fix command line compile issue with bundler.
-ENV LC_ALL C.UTF-8
+ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
 Run yum -y update && \
