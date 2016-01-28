@@ -14,12 +14,12 @@ Run yum -y update && \
     epel-release
 
 # Install base
-RUN yum -y update && \
-    yum -y groupinstall "Development Tools" && \
+RUN yum -y update && yum -y install httpd
+
+RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
     git \
-    httpd \
     mariadb \
     msmtp \
     net-tools \
@@ -48,6 +48,9 @@ RUN yum -y update && \
 RUN yum -y update && yum -y install \
     python-setuptools \
     rsyslog
+
+# Perform yum cleanup
+RUN yum clean all
 
 # Apply My_Init Workarounds
 RUN mkdir /etc/container_environment
