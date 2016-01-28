@@ -14,7 +14,7 @@ Run yum -y update && \
     epel-release
 
 # Install base
-RUN yum -y update && yum -y install httpd
+RUN yum -y update
 
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
