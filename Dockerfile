@@ -8,6 +8,9 @@ ENV TERM xterm
 # Fix command line compile issue with bundler.
 ENV LC_ALL en_US.utf8
 
+# Enable RHEL packages
+RUN yum-config-manager --enable rhel-7-server-optional-rpms
+
 # Install and enable repositories
 Run yum -y update && \
     yum -y install \
