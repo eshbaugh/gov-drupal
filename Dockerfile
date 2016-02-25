@@ -8,6 +8,10 @@ ENV TERM xterm
 # Fix command line compile issue with bundler.
 ENV LC_ALL en_US.utf8
 
+# Disable services management by systemd.
+RUN systemctl disable httpd.service && \
+    systemctl disable rsyslog.service
+
 # Install and enable repositories
 Run yum -y install \
     epel-release
@@ -67,10 +71,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     require \
     drush/drush:7.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
-
-# Disable services management by systemd.
-RUN systemctl disable httpd.service && \
-    systemctl disable rsyslog.service
 
 # Apache config, and PHP config, test apache config
 # See https://github.com/docker/docker/issues/7511 /tmp usage
