@@ -9,8 +9,7 @@ ENV TERM xterm
 ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
-Run yum -y update && \
-    yum -y install \
+Run yum -y install \
     epel-release
 
 
