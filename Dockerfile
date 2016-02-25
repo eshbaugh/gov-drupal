@@ -9,12 +9,9 @@ ENV TERM xterm
 ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
-Run yum -y update && \
-    yum -y install \
+Run yum -y install \
     epel-release
 
-# Install base
-RUN yum -y update
 
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
@@ -30,8 +27,7 @@ RUN yum -y groupinstall "Development Tools" && \
     wget
 
 # Install PHP and PHP modules
-RUN yum -y update && \
-    yum -y install \
+RUN yum -y install \
     php \
     php-curl \
     php-gd \
@@ -45,7 +41,7 @@ RUN yum -y update && \
     php-pecl-zendopcache
 
 # Install misc tools
-RUN yum -y update && yum -y install \
+RUN yum -y install \
     python-setuptools \
     rsyslog
 
