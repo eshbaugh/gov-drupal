@@ -1,4 +1,4 @@
-FROM rhel7
+FROM centos/httpd
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
