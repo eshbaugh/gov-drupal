@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos/httpd
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -9,17 +9,15 @@ ENV TERM xterm
 ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
-Run yum -y update && \
+RUN yum -y update && \
     yum -y install \
     epel-release
 
-# Install base
-RUN yum -y update && \
-    yum -y groupinstall "Development Tools" && \
+
+RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
     git \
-    httpd \
     mariadb \
     msmtp \
     net-tools \
@@ -30,8 +28,7 @@ RUN yum -y update && \
     wget
 
 # Install PHP and PHP modules
-RUN yum -y update && \
-    yum -y install \
+RUN yum -y install \
     php \
     php-curl \
     php-gd \
@@ -45,9 +42,12 @@ RUN yum -y update && \
     php-pecl-zendopcache
 
 # Install misc tools
-RUN yum -y update && yum -y install \
-    python-setuptools \
-    rsyslog
+RUN yum -y install \
+    python-setuptools
+
+# Perform yum cleanup
+RUN yum -y upgrade && \
+    yum clean all
 
 # Apply My_Init Workarounds
 RUN mkdir /etc/container_environment
