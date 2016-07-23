@@ -24,15 +24,15 @@ def error(message):
 
 def warn(message):
   if log_level >= LOG_LEVEL_WARN:
-    sys.stderr.write("*** %s\n" % message)
+    sys.stderr.write("** %s\n" % message)
 
 def info(message):
   if log_level >= LOG_LEVEL_INFO:
-    sys.stderr.write("*** %s\n" % message)
+    sys.stderr.write("* %s\n" % message)
 
 def debug(message):
   if log_level >= LOG_LEVEL_DEBUG:
-    sys.stderr.write("*** %s\n" % message)
+    sys.stderr.write("? %s\n" % message)
 
 def open_logfile():
   global logfile
@@ -267,35 +267,6 @@ def run_startup_files():
     info("Running /etc/rc.local...")
     run_command_killable_and_import_envvars("/etc/rc.local")
 
-def start_supervisor():
-  info("Booting supervisor daemon...")
-  pid = os.spawnl(os.P_NOWAIT, "/usr/bin/supervisord", "/usr/bin/supervisord",
-    "-c", "/etc/supervisord.conf")
-  info("Supervisor started as PID %d" % pid)
-  time.sleep(5)
-  output = subprocess.Popen(["/usr/bin/supervisorctl", "status"], stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
-  info("Started processes via Supervisor......\n" + output[0].decode("utf-8") ) 
-  return pid
-
-def wait_for_supervisor_or_interrupt(pid):
-  try:
-    status = waitpid_reap_other_children(pid)
-    return (True, status)
-  except KeyboardInterrupt:
-    return (False, None)
-
-def shutdown_supervisor_services():
-  debug("Begin shutting down supervisor services...")
-  os.system("/usr/bin/supervisorctl shutdown")
-
-def wait_for_supervisor_services():
-  debug("Waiting for supervisor services to exit...")
-  done = False
-  while not done:
-    done = os.system("ps aux | grep -v grep | grep -q 'supervisord -c'") != 0
-    if not done:
-      time.sleep(0.1)
-
 def install_insecure_key():
   info("Installing insecure SSH key for user root")
   run_command_killable("/usr/sbin/enable_insecure_key")
@@ -316,23 +287,12 @@ def main(args):
   if not args.skip_startup_files:
     run_startup_files()
   
-  supervisor_exited = False
   exit_code = None
-
-  if not args.skip_supervisor:
-    supervisor_pid = start_supervisor()
 
   try:
     exit_status = None
     if len(args.main_command) == 0:
-      supervisor_exited, exit_code = wait_for_supervisor_or_interrupt(supervisor_pid)
-      if supervisor_exited:
-        if exit_code is None:
-          info("Supervisor exited with unknown status")
-          exit_status = 1
-        else:
-          exit_status = os.WEXITSTATUS(exit_code)
-          info("Supervisor exited with status %d" % exit_status)
+      info("no argument specified")
     else:
       info("Running %s..." % " ".join(args.main_command))
       pid = os.spawnvp(os.P_NOWAIT, args.main_command[0], args.main_command)
@@ -353,11 +313,7 @@ def main(args):
         raise
     sys.exit(exit_status)
   finally:
-    if not args.skip_supervisor:
-      shutdown_supervisor_services()
-      if not supervisor_exited:
-        stop_child_process("supervisor daemon", supervisor_pid)
-      wait_for_supervisor_services()
+    info("finally event encountered")
 
 # Parse options.
 parser = argparse.ArgumentParser(description = 'Initialize the system.')
