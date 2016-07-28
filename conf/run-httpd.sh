@@ -1,6 +1,4 @@
 #!/bin/bash
-# THIS FILE IS NO LONGER USED, PROVIDED FOR ROLLBACK INSURANCE ONLY
-
 
 # Make sure we're not confused by old, incompletely-shutdown httpd
 # context after restarting the container.  httpd won't start correctly
