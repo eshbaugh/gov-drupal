@@ -49,14 +49,6 @@ RUN yum -y install \
 RUN yum -y upgrade && \
     yum clean all
 
-# Apply My_Init Workarounds
-RUN mkdir /etc/container_environment
-RUN mkdir /etc/workaround-docker-2267
-
-# Install supervisor. Requires python-setuptools.
-RUN easy_install \
-    supervisor
-
 # Install Composer and Drush
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin \
@@ -81,12 +73,10 @@ RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
     apachectl configtest
 RUN rsync -a /tmp/centos-7/etc/php* /etc/
 
-COPY conf/supervisord.conf /etc/supervisord.conf
-COPY conf/lamp.sh /etc/lamp.sh
-COPY conf/my_init /
-RUN chmod +x /my_*
-
 EXPOSE 80 443
 
-RUN chmod +x /etc/lamp.sh
-CMD ["/my_init"]
+# Simple startup script to avoid some issues observed with container restart 
+ADD conf/run-httpd.sh /run-httpd.sh
+RUN chmod -v +x /run-httpd.sh
+
+CMD ["/run-httpd.sh"]

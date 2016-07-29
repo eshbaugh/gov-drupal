@@ -1,4 +1,6 @@
 #!/usr/bin/python3.4 -u
+# THIS FILE IS NO LONGER USED, PROVIDED FOR ROLLBACK INSURANCE ONLY
+
 import os, os.path, sys, stat, signal, errno, argparse, time, json, re, subprocess
 
 KILL_PROCESS_TIMEOUT = 5
