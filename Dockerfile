@@ -79,7 +79,7 @@ EXPOSE 80 443
 ADD conf/run-httpd.sh /run-httpd.sh
 RUN chmod -v +x /run-httpd.sh
 
-ADD conf/php_mail.ini /srv/etc/php.d/php_mail.ini
-RUN chmod 644 /srv/etc/php.d/php_mail.ini
+ADD conf/mail.ini /etc/php.d/mail.ini
+RUN chmod 644 /etc/php.d/mail.ini
 
 CMD ["/run-httpd.sh"]
