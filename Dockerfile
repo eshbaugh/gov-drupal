@@ -16,17 +16,15 @@ RUN yum -y update && \
     yum -y update
 
 
-# Mariadb is the client not the server
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
-#    git \  # This is not required for prod 
-    mariadb \ # This is the mariadb client not mariadb-server
+    git \
+    mariadb \
     msmtp \
     net-tools \
-    python34 \ #??? now that we are no longer needing my_init is this still needed?
-#    rsync \ # Conficts with preinsatalled rsync,  should not be an issue
-#    tmux \ # ??? terminal multiplexer (nice for dev but prod?)
+    python34 \
+    tmux \
     vim \
     wget
 
