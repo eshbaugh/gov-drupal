@@ -1,4 +1,4 @@
-FROM centos/httpd
+FROM centos:7
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -10,36 +10,39 @@ ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
 RUN yum -y update && \
-    yum -y install \
-    epel-release
+    yum -y install epel-release && \
+#    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
+    rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
+    yum -y update
 
 
+# Mariadb is the client not the server
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
-    git \
-    mariadb \
+#    git \  # This is not required for prod 
+    mariadb \ # This is the mariadb client not mariadb-server
     msmtp \
     net-tools \
-    python34 \
-    rsync \
-    tmux \
+    python34 \ #??? now that we are no longer needing my_init is this still needed?
+#    rsync \ # Conficts with preinsatalled rsync,  should not be an issue
+#    tmux \ # ??? terminal multiplexer (nice for dev but prod?)
     vim \
     wget
 
 # Install PHP and PHP modules
 RUN yum -y install \
-    php \
-    php-curl \
-    php-gd \
-    php-imap \
-    php-mbstring \
-    php-mcrypt \
-    php-mysql \
-    php-odbc \
-    php-pear \
-    php-pecl-imagick \
-    php-pecl-zendopcache
+    php56u \
+    php56u-curl \
+    php56u-gd \
+    php56u-imap \
+    php56u-mbstring \
+    php56u-mcrypt \
+    php56u-mysql \
+    php56u-odbc \
+    php56u-pear \
+    php56u-pecl-imagick \
+    php56u-pecl-zendopcache
 
 # Install misc tools
 RUN yum -y install \
