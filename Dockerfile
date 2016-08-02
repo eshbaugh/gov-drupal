@@ -11,7 +11,7 @@ ENV LC_ALL en_US.utf8
 # Install and enable repositories
 RUN yum -y update && \
     yum -y install epel-release && \
-#    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
+    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
     rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
     yum -y update
 
