@@ -42,6 +42,13 @@ RUN yum -y install \
     php56u-pecl-imagick \
     php56u-pecl-zendopcache
 
+# Avoid duplicate loading of these .so (shared objects) when php is run
+RUN rm /etc/php.d/20-curl.ini \
+    /etc/php.d/20-dom.ini \
+    /etc/php.d/20-fileinfo.ini \
+    /etc/php.d/20-gd.ini \
+    /etc/php.d/20-imap.ini
+
 # Install misc tools
 RUN yum -y install \
     python-setuptools
