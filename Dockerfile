@@ -42,33 +42,6 @@ RUN yum -y install \
     php56u-pecl-imagick \
     php56u-pecl-zendopcache
 
-# Avoid duplicate loading of these .so (shared objects) when php is run
-# This is a workaround, the ideal fix would be to prevent the creation in the first place
-RUN rm /etc/php.d/20-curl.ini \
-    /etc/php.d/20-dom.ini \
-    /etc/php.d/20-fileinfo.ini \
-    /etc/php.d/20-gd.ini \
-    /etc/php.d/40-imagick.ini \
-    /etc/php.d/40-json.ini \
-    /etc/php.d/20-mbstring.ini \
-    /etc/php.d/20-mcrypt.ini \
-    /etc/php.d/30-mysql.ini \
-    /etc/php.d/30-mysqli.ini \
-    /etc/php.d/20-odbc.ini \
-    /etc/php.d/20-pdo.ini \
-    /etc/php.d/30-pdo_mysql.ini \
-    /etc/php.d/30-pdo_odbc.ini \
-    /etc/php.d/30-pdo_sqlite.ini \
-    /etc/php.d/20-phar.ini \
-    /etc/php.d/20-posix.ini \
-    /etc/php.d/20-sqlite3.ini \
-    /etc/php.d/20-sysvmsg.ini \
-    /etc/php.d/20-sysvsem.ini \
-    /etc/php.d/20-sysvshm.ini \
-    /etc/php.d/30-wddx.ini \
-    /etc/php.d/20-xmlwriter.ini \
-    /etc/php.d/20-zip.ini
-
 # Install misc tools
 RUN yum -y install \
     python-setuptools
@@ -109,5 +82,31 @@ RUN chmod -v +x /run-httpd.sh
 
 ADD conf/mail.ini /etc/php.d/mail.ini
 RUN chmod 644 /etc/php.d/mail.ini
+
+# Avoid duplicate loading of these .so (shared objects) when php is run
+# This is a workaround, the ideal fix would be to prevent the creation in the first place
+RUN rm /etc/php.d/20-curl.ini \
+    /etc/php.d/10-opcache.ini \
+    /etc/php.d/20-fileinfo.ini \
+    /etc/php.d/20-gd.ini \
+    /etc/php.d/40-imagick.ini \
+    /etc/php.d/40-json.ini \
+    /etc/php.d/20-mbstring.ini \
+    /etc/php.d/20-mcrypt.ini \
+    /etc/php.d/30-mysql.ini \
+    /etc/php.d/30-mysqli.ini \
+    /etc/php.d/20-odbc.ini \
+    /etc/php.d/20-pdo.ini \
+    /etc/php.d/30-pdo_mysql.ini \
+    /etc/php.d/30-pdo_odbc.ini \
+    /etc/php.d/30-pdo_sqlite.ini \
+    /etc/php.d/20-phar.ini \
+    /etc/php.d/20-posix.ini \
+    /etc/php.d/20-sqlite3.ini \
+    /etc/php.d/20-sysvmsg.ini \
+    /etc/php.d/20-sysvsem.ini \
+    /etc/php.d/20-sysvshm.ini \
+    /etc/php.d/30-wddx.ini \
+    /etc/php.d/20-zip.ini
 
 CMD ["/run-httpd.sh"]
