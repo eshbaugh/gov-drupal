@@ -88,6 +88,10 @@ RUN chmod 644 /etc/php.d/mail.ini
 RUN rm /etc/php.d/20-curl.ini \
     /etc/php.d/10-opcache.ini \
     /etc/php.d/dom.ini \
+    /etc/php.d/imap.ini \
+    /etc/php.d/xmlreader.ini \
+    /etc/php.d/xmlwriter.ini \
+    /etc/php.d/xsl.ini \
     /etc/php.d/20-fileinfo.ini \
     /etc/php.d/20-gd.ini \
     /etc/php.d/40-imagick.ini \
