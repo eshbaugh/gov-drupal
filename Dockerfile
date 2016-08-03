@@ -1,4 +1,4 @@
-FROM centos/httpd
+FROM centos:7
 MAINTAINER Ron Williams <hello@ronwilliams.io>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -10,8 +10,10 @@ ENV LC_ALL en_US.utf8
 
 # Install and enable repositories
 RUN yum -y update && \
-    yum -y install \
-    epel-release
+    yum -y install epel-release && \
+    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
+    rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
+    yum -y update
 
 
 RUN yum -y groupinstall "Development Tools" && \
@@ -22,24 +24,23 @@ RUN yum -y groupinstall "Development Tools" && \
     msmtp \
     net-tools \
     python34 \
-    rsync \
     tmux \
     vim \
     wget
 
 # Install PHP and PHP modules
 RUN yum -y install \
-    php \
-    php-curl \
-    php-gd \
-    php-imap \
-    php-mbstring \
-    php-mcrypt \
-    php-mysql \
-    php-odbc \
-    php-pear \
-    php-pecl-imagick \
-    php-pecl-zendopcache
+    php56u \
+    php56u-curl \
+    php56u-gd \
+    php56u-imap \
+    php56u-mbstring \
+    php56u-mcrypt \
+    php56u-mysql \
+    php56u-odbc \
+    php56u-pear \
+    php56u-pecl-imagick \
+    php56u-pecl-zendopcache
 
 # Install misc tools
 RUN yum -y install \
@@ -71,7 +72,9 @@ COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
 RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
     apachectl configtest
-RUN rsync -a /tmp/centos-7/etc/php* /etc/
+
+RUN rsync -a /tmp/centos-7/etc/php.ini /etc/.
+
 
 EXPOSE 80 443
 
