@@ -65,7 +65,7 @@ RUN rm /etc/php.d/20-curl.ini \
     /etc/php.d/20-sysvmsg.ini \
     /etc/php.d/20-sysvsem.ini \
     /etc/php.d/20-sysvshm.ini \
-    /etc/php.d/20-wddx.ini \
+    /etc/php.d/30-wddx.ini \
     /etc/php.d/20-xmlwriter.ini \
     /etc/php.d/20-zip.ini
 
