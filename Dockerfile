@@ -87,6 +87,7 @@ RUN chmod 644 /etc/php.d/mail.ini
 # This is a workaround, the ideal fix would be to prevent the creation in the first place
 RUN rm /etc/php.d/20-curl.ini \
     /etc/php.d/10-opcache.ini \
+    /etc/php.d/dom.ini \
     /etc/php.d/20-fileinfo.ini \
     /etc/php.d/20-gd.ini \
     /etc/php.d/40-imagick.ini \
