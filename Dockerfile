@@ -59,12 +59,12 @@ RUN yum -y upgrade && \
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin \
     --filename=composer \
-    --version=1.0.0-alpha10 && \
+    --version=1.2.0 && \
     composer \
     --working-dir=/usr/local/src/ \
     global \
     require \
-    drush/drush:7.* && \
+    drush/drush:8.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
 # Disable services management by systemd.
