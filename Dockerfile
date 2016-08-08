@@ -30,17 +30,17 @@ RUN yum -y groupinstall "Development Tools" && \
 
 # Install PHP and PHP modules
 RUN yum -y install \
-    php56u \
-    php56u-curl \
-    php56u-gd \
-    php56u-imap \
-    php56u-mbstring \
-    php56u-mcrypt \
-    php56u-mysql \
-    php56u-odbc \
-    php56u-pear \
-    php56u-pecl-imagick \
-    php56u-pecl-zendopcache
+    php70u \
+    php70u-curl \
+    php70u-gd \
+    php70u-imap \
+    php70u-mbstring \
+    php70u-mcrypt \
+    php70u-mysql \
+    php70u-odbc \
+    php70u-pear \
+    php70u-pecl-imagick \
+    php70u-pecl-zendopcache
 
 # Install misc tools
 RUN yum -y install \
@@ -51,16 +51,20 @@ RUN yum -y upgrade && \
     yum clean all
 
 # Install Composer and Drush
-RUN curl -sS https://getcomposer.org/installer | php -- \
-    --install-dir=/usr/local/bin \
-    --filename=composer \
-    --version=1.0.0-alpha10 && \
-    composer \
-    --working-dir=/usr/local/src/ \
-    global \
-    require \
-    drush/drush:7.* && \
-    ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
+#curl -sS https://getcomposer.org/installer | php --  --install-dir=/usr/local/bin  --filename=composer --version=1.0.0-alpha10 
+#composer --working-dir=/usr/local/src/ global require drush/drush:7.* 
+# ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
+
+#RUN curl -sS https://getcomposer.org/installer | php -- \
+#    --install-dir=/usr/local/bin \
+#    --filename=composer \
+#    --version=1.0.0-alpha10 && \
+#    composer \
+#    --working-dir=/usr/local/src/ \
+#    global \
+#    require \
+#    drush/drush:7.* && \
+#    ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
 # Disable services management by systemd.
 RUN systemctl disable httpd.service && \
@@ -70,8 +74,8 @@ RUN systemctl disable httpd.service && \
 # See https://github.com/docker/docker/issues/7511 /tmp usage
 COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
-RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
-    apachectl configtest
+#RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
+#    apachectl configtest
 
 RUN rsync -a /tmp/centos-7/etc/php.ini /etc/.
 
