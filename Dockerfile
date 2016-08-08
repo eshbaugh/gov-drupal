@@ -15,7 +15,6 @@ RUN yum -y update && \
     rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
     yum -y update
 
-
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
@@ -52,10 +51,6 @@ RUN yum -y upgrade && \
     yum clean all
 
 # Install Composer and Drush
-#curl -sS https://getcomposer.org/installer | php --  --install-dir=/usr/local/bin  --filename=composer --version=1.0.0-alpha10 
-#composer --working-dir=/usr/local/src/ global require drush/drush:7.* 
-# ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
-
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --install-dir=/usr/local/bin \
     --filename=composer \
@@ -75,11 +70,11 @@ RUN systemctl disable httpd.service && \
 # See https://github.com/docker/docker/issues/7511 /tmp usage
 COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
-#RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
-#    apachectl configtest
+RUN rsync -a /tmp/centos-7/etc/httpd /etc/  
+
+RUN apachectl configtest
 
 RUN rsync -a /tmp/centos-7/etc/php.ini /etc/.
-
 
 EXPOSE 80 443
 
