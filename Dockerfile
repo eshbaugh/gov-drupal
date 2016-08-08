@@ -40,6 +40,7 @@ RUN yum -y install \
     php70u-odbc \
     php70u-pear \
     php70u-pecl-imagick \
+    php70u-pecl-json \
     php70u-pecl-zendopcache
 
 # Install misc tools
@@ -55,16 +56,16 @@ RUN yum -y upgrade && \
 #composer --working-dir=/usr/local/src/ global require drush/drush:7.* 
 # ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
-#RUN curl -sS https://getcomposer.org/installer | php -- \
-#    --install-dir=/usr/local/bin \
-#    --filename=composer \
-#    --version=1.0.0-alpha10 && \
-#    composer \
-#    --working-dir=/usr/local/src/ \
-#    global \
-#    require \
-#    drush/drush:7.* && \
-#    ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer \
+    --version=1.0.0-alpha10 && \
+    composer \
+    --working-dir=/usr/local/src/ \
+    global \
+    require \
+    drush/drush:7.* && \
+    ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
 # Disable services management by systemd.
 RUN systemctl disable httpd.service && \
