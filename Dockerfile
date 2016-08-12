@@ -38,6 +38,7 @@ RUN yum -y install \
     php70u-mysql \
     php70u-odbc \
     php70u-pear \
+    php70u-mysqlnd \
     php70u-pecl-imagick \
     php70u-pecl-json \
     php70u-pecl-zendopcache
