@@ -18,6 +18,7 @@ RUN yum -y update && \
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
+    git \
     mariadb \
     msmtp \
     net-tools \
