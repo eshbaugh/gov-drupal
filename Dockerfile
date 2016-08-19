@@ -36,9 +36,7 @@ RUN yum -y install \
     php56u-mysql \
     php56u-odbc \
     php56u-pear \
-    php56u-mysqlnd \
     php56u-pecl-imagick \
-    php56u-pecl-json \
     php56u-pecl-zendopcache
 
 # Install misc tools
