@@ -1,5 +1,5 @@
 FROM centos:7
-MAINTAINER Ron Williams <hello@ronwilliams.io>
+MAINTAINER Jerry Eshbaugh <Jerry@TheStrategicProduct.com>
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 # Set TERM env to avoid mysql client error message "TERM environment variable not set" when running from inside the container
@@ -18,12 +18,10 @@ RUN yum -y update && \
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
-    git \
     mariadb \
     msmtp \
     net-tools \
     python34 \
-    tmux \
     vim \
     wget
 
