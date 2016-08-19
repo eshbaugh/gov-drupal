@@ -23,7 +23,6 @@ RUN yum -y groupinstall "Development Tools" && \
     msmtp \
     net-tools \
     python34 \
-    tmux \
     vim \
     wget
 
