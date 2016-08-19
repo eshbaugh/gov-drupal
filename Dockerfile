@@ -15,7 +15,6 @@ RUN yum -y update && \
     rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
     yum -y update
 
-
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
@@ -24,7 +23,6 @@ RUN yum -y groupinstall "Development Tools" && \
     msmtp \
     net-tools \
     python34 \
-    tmux \
     vim \
     wget
 
@@ -74,7 +72,6 @@ RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
     apachectl configtest
 
 RUN rsync -a /tmp/centos-7/etc/php.ini /etc/.
-
 
 EXPOSE 80 443
 
