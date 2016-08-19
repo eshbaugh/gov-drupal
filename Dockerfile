@@ -1,5 +1,5 @@
 FROM centos/httpd
-MAINTAINER Jerry Eshbaugh <Jerry@TheStrategicProduct.com>
+MAINTAINER Ron Williams <hello@ronwilliams.io>
 
 ENV PATH /usr/local/src/vendor/bin/:/usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
@@ -18,6 +18,7 @@ RUN yum -y update && \
 RUN yum -y groupinstall "Development Tools" && \
     yum -y install \
     curl \
+    git \
     mariadb \
     msmtp \
     net-tools \
