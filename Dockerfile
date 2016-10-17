@@ -38,7 +38,8 @@ RUN yum -y install \
     php56u-odbc \
     php56u-pear \
     php56u-pecl-imagick \
-    php56u-pecl-zendopcache
+    php56u-pecl-zendopcache \
+    php56u-memcache
 
 # Install misc tools
 RUN yum -y install \
