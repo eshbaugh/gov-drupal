@@ -61,6 +61,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     drush/drush:7.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
+RUN drush dl registry_rebuild
+
 # Disable services management by systemd.
 RUN systemctl disable httpd.service && \
     systemctl disable rsyslog.service
@@ -69,6 +71,7 @@ RUN systemctl disable httpd.service && \
 # See https://github.com/docker/docker/issues/7511 /tmp usage
 COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
+
 RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
     apachectl configtest
 
