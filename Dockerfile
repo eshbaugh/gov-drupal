@@ -61,8 +61,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     drush/drush:7.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
-RUN /usr/local/src/vendor/bin/drush dl registry_rebuild
-
 # Disable services management by systemd.
 RUN systemctl disable httpd.service && \
     systemctl disable rsyslog.service
