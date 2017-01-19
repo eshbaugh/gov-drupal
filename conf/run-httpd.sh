@@ -25,8 +25,8 @@ file_env() {
 file_env 'DOCROOT'
 if [ ! -z "$DOCROOT" ] && ! grep -q "^DocumentRoot \"$DOCROOT\"" /etc/httpd/conf/httpd.conf ; then
 	sed -i "s#/var/www/public#$DOCROOT#g" /etc/httpd/conf/httpd.conf
-	echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
 fi
+echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
 
 # Make sure we're not confused by old, incompletely-shutdown httpd
 # context after restarting the container.  httpd won't start correctly
