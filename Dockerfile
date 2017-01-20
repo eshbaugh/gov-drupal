@@ -11,12 +11,10 @@ ENV LC_ALL en_US.utf8
 # Install and enable repositories
 RUN yum -y update && \
     yum -y install epel-release && \
-    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
     rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
     yum -y update
 
-RUN yum -y groupinstall "Development Tools" && \
-    yum -y install \
+RUN yum -y install \
     curl \
     git \
     mariadb \
@@ -24,7 +22,8 @@ RUN yum -y groupinstall "Development Tools" && \
     net-tools \
     python34 \
     vim \
-    wget
+    wget \
+    rsyslog
 
 # Install PHP and PHP modules
 RUN yum -y install \
