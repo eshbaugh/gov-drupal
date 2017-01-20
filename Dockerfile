@@ -61,7 +61,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
 RUN drush dl registry_rebuild-7.x
     
 # Disable services management by systemd.
-RUN systemctl disable httpd.service && \
+RUN systemctl disable httpd.service
 
 # Apache config, and PHP config, test apache config
 # See https://github.com/docker/docker/issues/7511 /tmp usage
