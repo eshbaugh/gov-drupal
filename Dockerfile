@@ -23,7 +23,6 @@ RUN yum -y install \
     python34 \
     vim \
     wget \
-    rsyslog
 
 # Install PHP and PHP modules
 RUN yum -y install \
@@ -59,11 +58,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     drush/drush:7.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
-RUN drush dl registry_rebuild
+RUN drush dl registry_rebuild-7.x
     
 # Disable services management by systemd.
 RUN systemctl disable httpd.service && \
-    systemctl disable rsyslog.service
 
 # Apache config, and PHP config, test apache config
 # See https://github.com/docker/docker/issues/7511 /tmp usage
