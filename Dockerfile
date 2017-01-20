@@ -11,12 +11,10 @@ ENV LC_ALL en_US.utf8
 # Install and enable repositories
 RUN yum -y update && \
     yum -y install epel-release && \
-    rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && \ 
     rpm -Uvh https://centos7.iuscommunity.org/ius-release.rpm && \
     yum -y update
 
-RUN yum -y groupinstall "Development Tools" && \
-    yum -y install \
+RUN yum -y install \
     curl \
     git \
     mariadb \
@@ -62,11 +60,10 @@ RUN curl -sS https://getcomposer.org/installer | php -- \
     drush/drush:8.* && \
     ln -s /usr/local/src/vendor/bin/drush /usr/bin/drush
 
-RUN drush dl registry_rebuild
+RUN drush dl registry_rebuild-7.x
 
 # Disable services management by systemd.
-RUN systemctl disable httpd.service && \
-    systemctl disable rsyslog.service
+RUN systemctl disable httpd.service
 
 # Apache config, and PHP config, test apache config
 # See https://github.com/docker/docker/issues/7511 /tmp usage
