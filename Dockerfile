@@ -9,6 +9,9 @@ ENV TERM xterm
 # Fix command line compile issue with bundler.
 ENV LC_ALL en_US.utf8
 
+# Custom docroot (see conf/run-httpd.sh)
+ENV DOCROOT /var/www/public
+
 # Install and enable repositories
 RUN yum -y update && \
     yum -y install \
@@ -69,9 +72,8 @@ RUN systemctl disable httpd.service
 # See https://github.com/docker/docker/issues/7511 /tmp usage
 COPY public/index.php /var/www/public/index.php
 COPY centos-7 /tmp/centos-7/
-RUN rsync -a /tmp/centos-7/etc/httpd /etc/ && \
+RUN rsync -a /tmp/centos-7/etc/ /etc/ && \
     apachectl configtest
-RUN rsync -a /tmp/centos-7/etc/php* /etc/
 
 EXPOSE 80 443
 
