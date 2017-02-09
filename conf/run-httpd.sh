@@ -55,5 +55,18 @@ else
   fi
 fi
 
+# Symlink appropriate directories into the drupal document root
+# It would be good to have a more dynamic way to do this
+# to support other use cases
+if [ -d "/var/application/www/sites/default" ]; then
+  if [ -d "/mnt/public_files" ]; then
+     ln -s /mnt/public_files /var/application/www/sites/default/files
+  fi
+  if [ -d "/mnt/config" ]; then
+    if [ -f "/mnt/config/settings.php" ]; then
+      ln -s /mnt/config/settings.php /var/application/www/sites/default
+    fi
+  fi
+fi
 
 exec /usr/sbin/apachectl -DFOREGROUND
