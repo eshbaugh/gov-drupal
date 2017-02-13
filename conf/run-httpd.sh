@@ -58,15 +58,13 @@ fi
 # Symlink appropriate directories into the drupal document root
 # It would be good to have a more dynamic way to do this
 # to support other use cases
-if [ -d "/var/application/www/sites/default" ]; then
-  if [ -d "/mnt/public_files" ]; then
-     ln -s /mnt/public_files /var/application/www/sites/default/files
-  fi
-  if [ -d "/mnt/config" ]; then
-    if [ -f "/mnt/config/settings.php" ]; then
-      ln -s /mnt/config/settings.php /var/application/www/sites/default
-    fi
-  fi
+if [ -f "/var/application/.mounts" ]; then
+  while read p; do
+    src=$(echo $p | cut -f1 -d:)
+    dst=$(echo $p | cut -f2 -d:)
+    ln -s $src $dst
+    echo $src $dst
+  done </var/application/.mounts
 fi
 
 exec /usr/sbin/apachectl -DFOREGROUND
