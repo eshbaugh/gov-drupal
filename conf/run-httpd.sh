@@ -34,23 +34,22 @@ echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
 rm -rf /run/httpd/* /tmp/httpd*
 
 # Perform git pull
-if [ -d "/var/application/www" ]; then
+if [ -d "/var/application/.git" ]; then
   if [ -v GIT_BRANCH ]; then
     git --git-dir=/var/application git checkout $GIT_BRANCH
     git --git-dir=/var/application git pull origin $GIT_BRANCH
+  else
+    git --git-dir=/var/application git checkout master
+    git --git-dir=/var/application git pull origin master
   fi
 else
   if [ -v GIT_URL ]; then
     git clone $GIT_URL /var/application
-    if [ -d "/var/application/www" ]; then
+    if [ -d "/var/application/.git" ]; then
       if [ -v GIT_BRANCH ]; then
         git --git-dir=/var/application git checkout $GIT_BRANCH
         git --git-dir=/var/application git pull origin $GIT_BRANCH
       fi
-      if [ -d "/var/www/public" ]; then
-        mv /var/www/public /var/www/public_orig
-      fi
-      ln -s /var/application/www /var/www/public
     fi
   fi
 fi
