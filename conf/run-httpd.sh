@@ -5,26 +5,29 @@
 # (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
 #  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
 file_env() {
-	local var="$1"
-	local fileVar="${var}_FILE"
-	local def="${2:-}"
-	if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
-		echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
-		exit 1
-	fi
-	local val="$def"
-	if [ "${!var:-}" ]; then
-		val="${!var}"
-	elif [ "${!fileVar:-}" ]; then
-		val="$(< "${!fileVar}")"
-	fi
-	export "$var"="$val"
-	unset "$fileVar"
+  local var="$1"
+  local fileVar="${var}_FILE"
+  local def="${2:-}"
+
+  if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+    echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+    exit 1
+  fi
+
+  local val="$def"
+  if [ "${!var:-}" ]; then
+    val="${!var}"
+  elif [ "${!fileVar:-}" ]; then
+    val="$(< "${!fileVar}")"
+  fi
+
+  export "$var"="$val"
+  unset "$fileVar"
 }
 
 file_env 'DOCROOT'
 if [ ! -z "$DOCROOT" ] && ! grep -q "^DocumentRoot \"$DOCROOT\"" /etc/httpd/conf/httpd.conf ; then
-	sed -i "s#/var/www/public#$DOCROOT#g" /etc/httpd/conf/httpd.conf
+  sed -i "s#/var/www/public#$DOCROOT#g" /etc/httpd/conf/httpd.conf
 fi
 echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
 
@@ -33,25 +36,26 @@ echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-# Perform git pull
-if [ -d "/var/application/.git" ]; then
-  if [ -v GIT_BRANCH ]; then
-    git --git-dir=/var/application checkout $GIT_BRANCH
-    git --git-dir=/var/application pull origin $GIT_BRANCH
-  else
-    git --git-dir=/var/application checkout master
-    git --git-dir=/var/application pull origin master
+GIT_DIR="/var/application" 
+GIT_DIR_REPO="$GIT_DIR/.git"
+
+if [ -z "$GIT_BRANCH" ]; then
+  GIT_BRANCH="master"
+fi
+
+if [ -v GIT_URL ]; then
+  if [ ! -d "$GIT_DIR_REPO" ]; then
+    echo "Git clone of $GIT_URL to $GIT_DIR"
+    git clone $GIT_URL $GIT_DIR
   fi
+
+  echo "Pulling the latest code into $GIT_DIR"
+  git --git-dir=$GIT_DIR_REPO --work-tree=$GIT_DIR pull
+
+  echo "Checking out $GIT_BRANCH git branch"
+  git --git-dir=$GIT_DIR_REPO --work-tree=$GIT_DIR checkout -q $GIT_BRANCH
 else
-  if [ -v GIT_URL ]; then
-    git clone $GIT_URL /var/application
-    if [ -d "/var/application/.git" ]; then
-      if [ -v GIT_BRANCH ]; then
-        git --git-dir=/var/application checkout $GIT_BRANCH
-        git --git-dir=/var/application pull origin $GIT_BRANCH
-      fi
-    fi
-  fi
+  echo "Warning: GIT_URL environemnt variable not set, no drupal code pulled"
 fi
 
 # Symlink appropriate directories into the drupal document root
