@@ -25,35 +25,35 @@ file_env() {
   unset "$fileVar"
 }
 
-file_env 'DOCROOT'
-if [ ! -z "$DOCROOT" ] && ! grep -q "^DocumentRoot \"$DOCROOT\"" /etc/httpd/conf/httpd.conf ; then
-  sed -i "s#/var/www/public#$DOCROOT#g" /etc/httpd/conf/httpd.conf
-fi
-echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
-
 # Make sure we're not confused by old, incompletely-shutdown httpd
 # context after restarting the container.  httpd won't start correctly
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-GIT_DIR="/var/application" 
-GIT_DIR_REPO="$GIT_DIR/.git"
+file_env 'DOCROOT'
+if [ ! -z "$DOCROOT" ] && ! grep -q "^DocumentRoot \"$DOCROOT\"" /etc/httpd/conf/httpd.conf ; then
+  sed -i "s#/var/www/public#$DOCROOT#g" /etc/httpd/conf/httpd.conf
+fi
+
+echo "export DOCROOT='$DOCROOT'" > /etc/profile.d/docroot.sh
+
+GIT_REPO="$DOCROOT/.git"
 
 if [ -z "$GIT_BRANCH" ]; then
   GIT_BRANCH="master"
 fi
 
 if [ -v GIT_URL ]; then
-  if [ ! -d "$GIT_DIR_REPO" ]; then
-    echo "Git clone of $GIT_URL to $GIT_DIR"
-    git clone $GIT_URL $GIT_DIR
+  if [ ! -d "$GIT_REPO" ]; then
+    echo "Git clone of $GIT_URL to $DOCROOT"
+    git clone $GIT_URL $DOCROOT
   fi
 
-  echo "Pulling the latest code into $GIT_DIR"
-  git --git-dir=$GIT_DIR_REPO --work-tree=$GIT_DIR pull
+  echo "Pulling the latest code into $DOCROOT"
+  git --git-dir=$GIT_REPO --work-tree=$DOCROOT pull
 
   echo "Checking out $GIT_BRANCH git branch"
-  git --git-dir=$GIT_DIR_REPO --work-tree=$GIT_DIR checkout -q $GIT_BRANCH
+  git --git-dir=$GIT_REPO --work-tree=$DOCROOT checkout -q $GIT_BRANCH
 else
   echo "Warning: GIT_URL environemnt variable not set, no drupal code pulled"
 fi
