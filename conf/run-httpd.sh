@@ -62,8 +62,7 @@ if [ -f "/var/application/.mounts" ]; then
     src=$(echo $p | cut -f1 -d:)
     dst=$(echo $p | cut -f2 -d:)
     # Removes existing files to allow symlink to apply in all cases.
-    rm -fR $dst
-    ln -s $src $dst
+    ln -sf $src $dst
     echo $src $dst
   done </var/application/.mounts
 fi
