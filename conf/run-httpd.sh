@@ -30,7 +30,7 @@ file_env() {
 # if it thinks it is already running.
 rm -rf /run/httpd/* /tmp/httpd*
 
-# WARNING: DOCROOT must begin with /var/application
+# WARNING: If DOCROOT is set it must must begin with /var/application
 # DOCROOT is a combination of absolute and relatave path
 # Once decommision the Transitional Platform  we should refactor
 # Propose two variables for maximum flexibilty and clarity
@@ -52,17 +52,19 @@ if [ -z "$GIT_BRANCH" ]; then
   GIT_BRANCH="master"
 fi
 
+# To do manual git management leave GIT_URL unset,  DOCROOT will still be used by Apache as the DocumentRoot
 if [ -v GIT_URL ]; then
   if [ ! -d "$GIT_REPO" ]; then
     echo "Git clone of $GIT_URL to $GIT_DIR"
     git clone $GIT_URL $GIT_DIR
   fi
 
-  echo "Pulling the latest code into $GIT_DIR"
-  git --git-dir=$GIT_REPO --work-tree=$GIT_DIR pull
-
   echo "Checking out $GIT_BRANCH git branch"
   git --git-dir=$GIT_REPO --work-tree=$GIT_DIR checkout -q $GIT_BRANCH
+
+  echo "Pulling the latest code into $GIT_DIR"
+  git --git-dir=$GIT_REPO --work-tree=$GIT_DIR pull origin $GIT_BRANCH
+
 else
   echo "Warning: GIT_URL environemnt variable not set, no drupal code pulled"
 fi
