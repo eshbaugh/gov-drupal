@@ -36,19 +36,19 @@ rm -rf /run/httpd/* /tmp/httpd*
 # Perform git pull
 if [ -d "/var/application/.git" ]; then
   if [ -v GIT_BRANCH ]; then
-    git --git-dir=/var/application checkout $GIT_BRANCH
-    git --git-dir=/var/application pull origin $GIT_BRANCH
+    git --git-dir=/var/application/.git checkout $GIT_BRANCH
+    git --git-dir=/var/application/.git pull origin $GIT_BRANCH
   else
-    git --git-dir=/var/application checkout master
-    git --git-dir=/var/application pull origin master
+    git --git-dir=/var/application/.git checkout master
+    git --git-dir=/var/application/.git pull origin master
   fi
 else
   if [ -v GIT_URL ]; then
     git clone $GIT_URL /var/application
     if [ -d "/var/application/.git" ]; then
       if [ -v GIT_BRANCH ]; then
-        git --git-dir=/var/application checkout $GIT_BRANCH
-        git --git-dir=/var/application pull origin $GIT_BRANCH
+        git --git-dir=/var/application/.git checkout $GIT_BRANCH
+        git --git-dir=/var/application/.git pull origin $GIT_BRANCH
       fi
     fi
   fi
