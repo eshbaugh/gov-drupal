@@ -52,6 +52,7 @@ if [ -z "$GIT_BRANCH" ]; then
   GIT_BRANCH="master"
 fi
 
+
 # To do manual git management leave GIT_URL unset,  DOCROOT will still be used by Apache as the DocumentRoot
 if [ -v GIT_URL ]; then
   if [ ! -d "$GIT_REPO" ]; then
