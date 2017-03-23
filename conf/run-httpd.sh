@@ -56,7 +56,7 @@ fi
 if [ -v GIT_URL ]; then
   if [ ! -d "$GIT_REPO" ]; then
     echo "Git clone of $GIT_URL to $GIT_DIR"
-    git clone $GIT_URL $GIT_DIR
+    git clone --recursive -j3 $GIT_URL $GIT_DIR
   fi
 
   echo "Checking out $GIT_BRANCH git branch"
@@ -64,7 +64,9 @@ if [ -v GIT_URL ]; then
 
   echo "Pulling the latest code into $GIT_DIR"
   git --git-dir=$GIT_REPO --work-tree=$GIT_DIR pull origin $GIT_BRANCH
-
+  
+  echo "Updating submodules"
+  git --git-dir=$GIT_REPO --work-tree=$GIT_DIR submodule update --init -recursive
 else
   echo "Warning: GIT_URL environemnt variable not set, no drupal code pulled"
 fi
