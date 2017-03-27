@@ -77,7 +77,15 @@ if [ -f "/var/application/.mounts" ]; then
   while read p; do
     src=$(echo $p | cut -f1 -d:)
     dst=$(echo $p | cut -f2 -d:)
-    # Removes existing files to allow symlink to apply in all cases.
+
+    # Removes existing directories without existing symlinks as a precaution
+    if [[ ! $(find $dst -type l -xtype d) ]]; then
+      rm -fR $dst
+    fi
+
+    # Make sure the directory one level above $dest so the simbolic link will not fail
+    mkdir -p ${dst%/*}
+
     ln -sf $src $dst
     echo $src $dst
   done </var/application/.mounts
