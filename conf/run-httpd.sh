@@ -74,16 +74,6 @@ if [ -v GIT_URL ]; then
     # We aren't using ssh keys so we need to make github urls relative
     sed -i.bak "s/git@github\.com\:/\.\.\/\.\.\//g" "$GIT_DIR/.gitmodules"
 
-
-  if [ -f "$GIT_DIR/.gitmodules" ]; then 
-    echo "Updating submodules"
-    # Unfortunately we have to CD to the working directory for this to work
-    # there is a bug with submodule that --work-tree is ignored
-    cd $GIT_DIR
-  
-    # We aren't using ssh keys so we need to make github urls relative
-    sed -i.bak "s/git@github\.com\:/\.\.\/\.\.\//g" "$GIT_DIR/.gitmodules"
-
     git --git-dir=$GIT_REPO --work-tree=$GIT_DIR submodule update --init --recursive --remote
     git --git-dir=$GIT_REPO --work-tree=$GIT_DIR submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
     cd $OLDPWD
