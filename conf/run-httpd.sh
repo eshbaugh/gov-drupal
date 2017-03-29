@@ -74,6 +74,16 @@ if [ -v GIT_URL ]; then
     # We aren't using ssh keys so we need to make github urls relative
     sed -i.bak "s/git@github\.com\:/\.\.\/\.\.\//g" "$GIT_DIR/.gitmodules"
 
+
+  if [ -f "$GIT_DIR/.gitmodules" ]; then 
+    echo "Updating submodules"
+    # Unfortunately we have to CD to the working directory for this to work
+    # there is a bug with submodule that --work-tree is ignored
+    cd $GIT_DIR
+  
+    # We aren't using ssh keys so we need to make github urls relative
+    sed -i.bak "s/git@github\.com\:/\.\.\/\.\.\//g" "$GIT_DIR/.gitmodules"
+
     git --git-dir=$GIT_REPO --work-tree=$GIT_DIR submodule update --init --recursive --remote
     git --git-dir=$GIT_REPO --work-tree=$GIT_DIR submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
     cd $OLDPWD
@@ -89,8 +99,17 @@ if [ -f "/var/application/.mounts" ]; then
   while read p; do
     src=$(echo $p | cut -f1 -d:)
     dst=$(echo $p | cut -f2 -d:)
-    # Removes existing files to allow symlink to apply in all cases.
+
+    # Removes existing directories without existing symlinks as a precaution
+    if [[ ! $(find $dst -type l -xtype d) ]]; then
+      rm -fR $dst
+    fi
+
+    # Make sure the directory one level above $dest so the simbolic link will not fail
+    mkdir -p ${dst%/*}
+
     ln -sf $src $dst
+
     echo $src $dst
   done </var/application/.mounts
 fi
